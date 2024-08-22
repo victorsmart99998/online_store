@@ -530,6 +530,11 @@ mark,
   height: auto;
 }
 
+.img-fluidd {
+  max-width: 70%;
+  height: auto;
+}
+
 .img-thumbnail {
   padding: 0.25rem;
   background-color: #F5F5F5;
@@ -605,6 +610,16 @@ pre code {
   margin-left: auto;
 }
 
+.containerr {
+  width: 50%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  border: 1px solid rgba(0, 0, 0, .1)
+}
+
+
 @media (min-width: 576px) {
   .container, .container-sm {
     max-width: 540px;
@@ -625,6 +640,12 @@ pre code {
 
 @media (min-width: 1200px) {
   .container, .container-sm, .container-md, .container-lg, .container-xl {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .containerr, .container-sm, .container-md, .container-lg, .container-xl {
     max-width: 1140px;
   }
 }
@@ -9710,27 +9731,3 @@ a.text-dark:hover, a.text-dark:focus {
     transform: translateY(-15px);
   }
 }
-
-.form2{
-	max-width: 600px;
-	margin: 0 auto;
-	border: 1px solid var(--borderColor);
-	padding: 15px;
-	border-radius: 5px;
-	margin-bottom: 50px;
-	margin-top: 40px;
-}
-
-
-.form2 input[type=text], .form2 input[type=email], .form2 input[type=password]{
-	width: 100%;
-	padding-top: 10px;
-	padding-bottom:10px;
-	border-radius: 5px;
-	border:1px solid var(--borderColor);
-	font-size: 14px;
-}
-
-.form2 .form-groupp ul, .form2 .form-groupp p .helptext{
-        display: none;
-    }

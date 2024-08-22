@@ -32,10 +32,10 @@
                             <th>Remove</th>
                         </tr>
                     </thead>
-                    <tbody class="align-middle">
+                    <tbody class="align-middle" id="cart-list">
                     {% for product_id, product in cart_data.items %}
                         <tr>
-                            <td class="align-middle"><img src="{{product.imageURL}}" alt="" style="width: 50px;">{{product.name}}</td>
+                            <td class="align-middle"><img src="{{product.image}}" alt="" style="width: 50px;">{{product.title}}</td>
 
                             <td class="align-middle">${{product.price}}</td>
                             <td class="align-middle">
@@ -45,6 +45,7 @@
                                         <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
+                                    <input type="hidden" class="product-id-{{product_id}}" value="{{product_id}}">
                                     <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="{{product.qty}}">
                                     <div class="input-group-btn">
                                         <button class="btn btn-sm btn-primary btn-plus">
@@ -54,7 +55,7 @@
                                 </div>
                             </td>
                             <td class="align-middle">$ {% widthratio product.price 1 product.qty %}</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
+                            <td class="align-middle"><button class="btn btn-sm btn-danger delete-item" data-product="{{product_id}}"><i class="fa fa-times"></i></button></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -84,9 +85,11 @@
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
                             <h5>Total</h5>
-                            <h5>$160</h5>
+                            <h5>${{total}}</h5>
                         </div>
-                        <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button>
+                        {% if totalcartitems %}
+                        <a class="btn btn-block btn-primary font-weight-bold my-3 py-3" href="{% url 'store:checkout_view' %}">Proceed To Checkout</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

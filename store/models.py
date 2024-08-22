@@ -18,38 +18,17 @@ STATUS = (
 )
 
 RATING = (
-    ('Draft', 'Draft'),
-    ('Disabled', 'Disabled'),
-    ('Rejected', 'Rejected'),
-    ('In_review', 'In_review'),
-    ('Published', 'Published'),
+    ('1', '⭐☆☆☆☆'),
+    ('2', '⭐⭐☆☆☆'),
+    ('3', '⭐⭐⭐☆☆'),
+    ('4', '⭐⭐⭐⭐☆'),
+    ('5', '⭐⭐⭐⭐⭐'),
 )
-
-
-class Price(models.Model):
-    name = models.CharField(max_length=200, null=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Color(models.Model):
-    name = models.CharField(max_length=200, null=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Size(models.Model):
-    name = models.CharField(max_length=200, null=True)
-
-    def __str__(self):
-        return self.name
 
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=200, null=True)
+    name = models.CharField(max_length=20, null=True)
     image = models.ImageField(upload_to='category/')
 
     @property
@@ -69,16 +48,16 @@ class Category(models.Model):
 
 class Vendor(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=200, null=True)
+    name = models.CharField(max_length=20, null=True)
     image = models.ImageField(upload_to='vendor/')
     descriptions = models.TextField(null=True, blank=True)
-    address = models.CharField(max_length=200, null=True, default='123 main street')
-    contact = models.CharField(max_length=200, null=True, default='+234 (345) 787')
-    chat_rep_time = models.CharField(max_length=200, null=True, default='10')
-    shipping_on_time = models.CharField(max_length=200, null=True, default='10')
-    authentic_rating = models.CharField(max_length=200, null=True, default='10')
-    days_return = models.CharField(max_length=200, null=True, default='10')
-    warranty_period = models.CharField(max_length=200, null=True, default='10')
+    address = models.CharField(max_length=20, null=True, default='123 main street')
+    contact = models.CharField(max_length=20, null=True, default='+234 (345) 787')
+    chat_rep_time = models.CharField(max_length=20, null=True, default='10')
+    shipping_on_time = models.CharField(max_length=20, null=True, default='10')
+    authentic_rating = models.CharField(max_length=20, null=True, default='10')
+    days_return = models.CharField(max_length=20, null=True, default='10')
+    warranty_period = models.CharField(max_length=20, null=True, default='10')
 
     @property
     def imageURL(self):
@@ -102,16 +81,14 @@ class Tags(models.Model):
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=200, null=True)
+    name = models.CharField(max_length=20, null=True)
     image = models.ImageField(upload_to='products/')
     descriptions = models.TextField(null=True, blank=True)
-    color = models.ForeignKey(Color, on_delete=models.CASCADE, null=True)
-    size = models.ForeignKey(Size, on_delete=models.CASCADE, null=True)
-    price = models.DecimalField(max_digits=7777, decimal_places=2)
-    old_price = models.DecimalField(max_digits=7777, decimal_places=2)
+    price = models.DecimalField(max_digits=5, decimal_places=1)
+    old_price = models.DecimalField(max_digits=20, decimal_places=2)
     specifications = models.TextField(null=True, blank=True)
     tags = models.ForeignKey(Tags, on_delete=models.SET_NULL, null=True, blank=True)
-    products_status = models.CharField(choices=STATUS, max_length=200, null=True)
+    products_status = models.CharField(choices=STATUS, max_length=20, null=True)
     status = models.BooleanField(default=True, null=True, blank=True)
     in_stock = models.BooleanField(default=True, null=True, blank=True)
     feature = models.BooleanField(default=False, null=True, blank=True)
@@ -157,9 +134,9 @@ class ProductImage(models.Model):
 
 class CartOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    price = models.DecimalField(max_digits=7777, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=1)
     paid_status = models.BooleanField(default=False, null=True, blank=True)
-    products_status = models.CharField(choices=STATUS_CHOICE, max_length=200, null=True, default='processing')
+    products_status = models.CharField(choices=STATUS_CHOICE, max_length=20, null=True, default='processing')
     date_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -168,13 +145,13 @@ class CartOrder(models.Model):
 
 class CartOrderItem(models.Model):
     order = models.ForeignKey(CartOrder, on_delete=models.CASCADE, null=True)
-    product_status = models.CharField(max_length=200, null=True)
-    invoice_no = models.CharField(max_length=200, null=True)
-    item = models.CharField(max_length=200, null=True)
+    product_status = models.CharField(max_length=20, null=True)
+    invoice_no = models.CharField(max_length=20, null=True)
+    item = models.CharField(max_length=20, null=True)
     image = models.ImageField(upload_to='products/')
     qty = models.IntegerField(default='0')
-    price = models.DecimalField(max_digits=7777, decimal_places=2)
-    total = models.DecimalField(max_digits=7777, decimal_places=2)
+    price = models.DecimalField(max_digits=20, decimal_places=2)
+    total = models.DecimalField(max_digits=20, decimal_places=2)
 
     class Meta:
         verbose_name_plural = "cart order items"
@@ -184,7 +161,7 @@ class ProductReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     review = models.TextField()
-    rating = models.IntegerField(choices=RATING, default=None)
+    rating = models.IntegerField(choices=RATING, default=None, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -202,8 +179,41 @@ class WishList(models.Model):
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    address = models.CharField(max_length=200, null=True)
+    address = models.CharField(max_length=20, null=True)
     status = models.BooleanField(default=False, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Address"
+
+
+class NewsletterSubscribers(models.Model):
+    email = models.CharField(max_length=70, null=True)
+
+    def __str__(self):
+        return self.email
+
+
+class ShippingAddress(models.Model):
+    first_name = models.CharField(max_length=20, null=True, blank=True)
+    last_name = models.CharField(max_length=20, null=True, blank=True)
+    email = models.CharField(max_length=20, null=True, blank=True)
+    mobile = models.CharField(max_length=20, null=True, blank=True)
+    address = models.CharField(max_length=20, null=True, blank=True)
+    country = models.CharField(max_length=20, null=True, blank=True)
+    city = models.CharField(max_length=20, null=True, blank=True)
+    state = models.CharField(max_length=20, null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=20, null=True, blank=True)
+    email = models.CharField(max_length=20, null=True, blank=True)
+    subject = models.CharField(max_length=20, null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email
