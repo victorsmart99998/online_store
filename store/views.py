@@ -23,9 +23,7 @@ def contact(request):
 
 def shop(request):
     products = Product.objects.all()
-    colors = Color.objects.all()
-    sizes = Size.objects.all()
-    context = {'products': products, 'colors': colors, 'sizes': sizes}
+    context = {'products': products}
     return render(request, 'store/shop.html', context)
 
 
